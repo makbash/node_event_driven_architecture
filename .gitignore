@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+.bak/
+.docs/
+logs/*
+tmp/
+temp/
+build/
+.env
+.env.prod
+.history/*
+node_modules/
+package-lock.json
+yarn.lock
