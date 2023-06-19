@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    ports:
+      - "5672:5672" #AMQP protocol port      
+      - "15672:15672" #HTTP management UI
+    healthcheck:
+      # test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      # test: ["CMD-SHELL", "curl -f -i -u guest:guest http://localhost:15672/api/vhosts || exit 1"]
+      # test: curl -f -i -u guest:guest http://localhost:15672/api/aliveness-test/vhost || exit 1
+      # test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 30s
+      timeout: 90s
+      retries: 5
+
+  # auth:
+  #   build:
+  #     context: ./auth
+  #     args:
+  #       - NODE_ENV=development
+  #     target: dev
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - .:/auth:/app/
+  #   environment:
+  #     - SERVICE=auth
+  #   env_file:
+  #     - ./auth/.env
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #       restart: true
+  #   # command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=90 -- node src/consumer.js'
+
+volumes:
+  mongodb:
