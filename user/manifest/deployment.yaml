@@ -20,7 +20,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 5000
+            port: 5100
           initialDelaySeconds: 30
           periodSeconds: 2
         resources:
