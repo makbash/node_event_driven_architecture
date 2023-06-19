@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: agusrichard/user-service
+        image: modulera/user-service
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
