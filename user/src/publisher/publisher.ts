@@ -3,7 +3,7 @@ import amqp, { Connection } from 'amqplib/callback_api'
 import { ConfigType } from '../configs'
 
 const createMQPublisher = (config: ConfigType) => {
-  console.log('Connecting to RabbitMQ...')
+  console.log('Publisher connecting to RabbitMQ ...')
   let ch: any
   const queue = config.USER_TO_AUTH_QUEUE
   amqp.connect(config.AMQP_URL, (errorConnect: Error, connection: Connection) => {
@@ -19,7 +19,7 @@ const createMQPublisher = (config: ConfigType) => {
       }
 
       ch = channel
-      console.log('Connected to RabbitMQ')
+      console.log('Publisher Connected to RabbitMQ')
     })
   })
   return (msg: string) => {

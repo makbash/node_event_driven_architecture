@@ -4,7 +4,7 @@ import { ConfigType } from '../configs'
 import { IUserService } from '../services'
 
 const createMQConsumer = (config: ConfigType, userService: IUserService) => {
-  console.log('Connecting to RabbitMQ...')
+  console.log('Consumer connecting to RabbitMQ ...')
   return () => {
     amqp.connect(config.AMQP_URL, (errConn, conn) => {
       if (errConn) {
@@ -16,7 +16,7 @@ const createMQConsumer = (config: ConfigType, userService: IUserService) => {
           throw errChan
         }
 
-        console.log('Connected to RabbitMQ')
+        console.log('Consumer Connected to RabbitMQ')
         chan.assertQueue(config.AUTH_TO_USER_QUEUE, { durable: true })
         chan.consume(config.AUTH_TO_USER_QUEUE, (msg: Message | null) => {
           if (msg) {
