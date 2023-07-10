@@ -29,26 +29,65 @@ services:
       timeout: 90s
       retries: 5
 
-  # auth:
-  #   build:
-  #     context: ./auth
-  #     args:
-  #       - NODE_ENV=development
-  #     target: dev
-  #   ports:
-  #     - "5000:5000"
-  #   volumes:
-  #     - .:/auth:/app/
-  #   environment:
-  #     - SERVICE=auth
-  #   env_file:
-  #     - ./auth/.env
-  #   restart: on-failure
-  #   depends_on:
-  #     rabbitmq:
-  #       condition: service_healthy
-  #       restart: true
-  #   # command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=90 -- node src/consumer.js'
+  auth:
+    build:
+      context: ./auth
+      args:
+        - NODE_ENV=development
+      target: dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/auth:/app/
+    environment:
+      - SERVICE=auth
+    env_file:
+      - ./auth/.env
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+
+  user:
+    build:
+      context: ./user
+      args:
+        - NODE_ENV=development
+      target: dev
+    ports:
+      - "5100:5100"
+    volumes:
+      - .:/user:/app/
+    environment:
+      - SERVICE=user
+    env_file:
+      - ./user/.env
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+
+  socket:
+    build:
+      context: ./socket
+      args:
+        - NODE_ENV=development
+      target: dev
+    ports:
+      - "5200:5200"
+    volumes:
+      - .:/socket:/app/
+    environment:
+      - SERVICE=socket
+    env_file:
+      - ./socket/.env
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
 
 volumes:
   mongodb:
