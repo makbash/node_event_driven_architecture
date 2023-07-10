@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export type ConfigType = {
+  WHITE_LIST: string[]
   DB_HOST: string
   DB_USERNAME: string
   DB_PASSWORD: string
@@ -16,6 +17,7 @@ export type ConfigType = {
 
 function createConfigs(): ConfigType {
   return {
+    WHITE_LIST: ['http://localhost:3000'],
     PORT: parseInt(String(process.env.PORT), 10),
     DB_HOST: String(process.env.DB_HOST),
     DB_USERNAME: String(process.env.DB_USERNAME),

@@ -6,9 +6,9 @@ import { adminOnlyMiddleware } from '../middlewares'
 import { IUserService } from '../services'
 
 const createUserRouter = (service: IUserService) => {
-  const r = Router()
+  const router = Router()
 
-  r.post('/create', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
+  router.post('/create', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
       const user: User = {
         email: req.body.email,
@@ -28,7 +28,7 @@ const createUserRouter = (service: IUserService) => {
     }
   })
 
-  r.get('/profile', async (req: Request, res: Response): Promise<void> => {
+  router.get('/me', async (req: Request, res: Response): Promise<void> => {
     try {
       const id = String(res.locals.userData.id)
       const result = await service.findById(id)
@@ -43,7 +43,7 @@ const createUserRouter = (service: IUserService) => {
     }
   })
 
-  r.get('/find-all', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
+  router.get('/find-all', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
       const skip = parseInt(String(req.query.skip), 10)
       const take = parseInt(String(req.query.take), 10)
@@ -59,7 +59,7 @@ const createUserRouter = (service: IUserService) => {
     }
   })
 
-  r.put('/update', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
+  router.put('/update', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
       const user: User = {
         id: String(req.body.id),
@@ -80,7 +80,7 @@ const createUserRouter = (service: IUserService) => {
     }
   })
 
-  r.delete('/delete', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
+  router.delete('/delete', adminOnlyMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
       const id = String(req.query.id)
       const result = await service.delete(id)
@@ -95,7 +95,7 @@ const createUserRouter = (service: IUserService) => {
     }
   })
 
-  return r
+  return router
 }
 
 export default createUserRouter

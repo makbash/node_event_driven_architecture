@@ -4,9 +4,9 @@ import { User } from '../repositories'
 import { IUserService } from '../services'
 
 const createAuthRouter = (service: IUserService) => {
-  const r = Router()
+  const router = Router()
 
-  r.post('/login', async (req: Request, res: Response): Promise<void> => {
+  router.post('/login', async (req: Request, res: Response): Promise<void> => {
     try {
       const result = await service.login(req.body.email, req.body.password)
       res.json({
@@ -20,7 +20,7 @@ const createAuthRouter = (service: IUserService) => {
     }
   })
 
-  r.post('/register', async (req: Request, res: Response): Promise<void> => {
+  router.post('/register', async (req: Request, res: Response): Promise<void> => {
     try {
       const user: User = {
         email: req.body.email,
@@ -40,7 +40,7 @@ const createAuthRouter = (service: IUserService) => {
     }
   })
 
-  return r
+  return router
 }
 
 export default createAuthRouter
